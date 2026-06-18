@@ -99,29 +99,38 @@
     animation: loader-spin 0.65s linear infinite;
   }
 
-  .loader-bars {
-    @apply flex h-10 items-end justify-center gap-1;
+  .ai-core-container {
+    @apply relative flex items-center justify-center w-20 h-20;
   }
 
-  .loader-bars span {
-    @apply w-1 bg-orange-500;
-    animation: loader-bar 0.85s ease-in-out infinite;
+  .ai-core-orb {
+    @apply absolute w-6 h-6 bg-orange-500 rounded-full blur-[2px];
+    animation: ai-core-pulse 1.2s ease-in-out infinite alternate;
+    box-shadow: 0 0 15px 4px rgba(249, 115, 22, 0.7);
   }
 
-  .loader-bars span:nth-child(2) {
-    animation-delay: 0.12s;
+  .ai-core-ring {
+    @apply absolute inset-0 rounded-full border-[1.5px] border-orange-500/20 border-t-orange-400 border-b-orange-400;
+    animation: loader-spin 2s linear infinite;
+  }
+  
+  .ai-core-ring::before {
+    content: '';
+    @apply absolute inset-2 rounded-full border-[1.5px] border-orange-500/10 border-r-orange-500 border-l-orange-500;
+    animation: loader-spin 1.5s linear infinite reverse;
   }
 
-  .loader-bars span:nth-child(3) {
-    animation-delay: 0.24s;
+  .ai-core-particles span {
+    @apply absolute w-1.5 h-1.5 bg-orange-300 rounded-full;
+    animation: ai-particle-float 1.5s ease-in-out infinite alternate;
   }
 
-  .loader-bars span:nth-child(4) {
-    animation-delay: 0.36s;
-  }
+  .ai-core-particles span:nth-child(1) { top: -5%; left: 50%; animation-delay: 0.1s; }
+  .ai-core-particles span:nth-child(2) { bottom: 10%; right: 5%; animation-delay: 0.5s; }
+  .ai-core-particles span:nth-child(3) { bottom: 10%; left: 5%; animation-delay: 0.9s; }
 
-  .loader-bars span:nth-child(5) {
-    animation-delay: 0.48s;
+  .ai-pulse-text {
+    animation: ai-text-glow 1.5s ease-in-out infinite alternate;
   }
 
   .loader-overlay {
@@ -140,16 +149,19 @@
   }
 }
 
-@keyframes loader-bar {
-  0%,
-  100% {
-    height: 0.5rem;
-    opacity: 0.35;
-  }
-  50% {
-    height: 2.5rem;
-    opacity: 1;
-  }
+@keyframes ai-core-pulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px 8px rgba(249, 115, 22, 0.8); }
+}
+
+@keyframes ai-particle-float {
+  0% { transform: translateY(0) scale(0.8); opacity: 0.4; }
+  100% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+}
+
+@keyframes ai-text-glow {
+  0% { text-shadow: 0 0 5px rgba(249, 115, 22, 0.2); }
+  100% { text-shadow: 0 0 15px rgba(249, 115, 22, 0.7); }
 }
 
 @keyframes loader-fade-in {

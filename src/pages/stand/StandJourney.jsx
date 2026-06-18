@@ -26,6 +26,7 @@ export default function StandJourney() {
   const [cvFile, setCvFile] = useState(null);
   const [interview, setInterview] = useState(null);
   const [cvStats, setCvStats] = useState(0);
+  const [selectedOfferId, setSelectedOfferId] = useState(null);
 
   const [form, setForm] = useState({
     firstName: '',
@@ -95,9 +96,10 @@ export default function StandJourney() {
   };
 
   const startInterview = async () => {
+    if (!selectedOfferId) return alert('Veuillez sélectionner une offre d\'abord.');
     setOverlay(true);
     try {
-      const data = await standApi.startInterview(token);
+      const data = await standApi.startInterview(token, selectedOfferId);
       setInterview(data.interview);
       setStep('interview');
     } catch (e) {
@@ -270,9 +272,14 @@ export default function StandJourney() {
         {step === 'offers' && (
           <section className="space-y-4">
             <h2 className="page-title">Offres pour vous</h2>
+            <p className="text-sm text-neutral-400 mb-2">Sélectionnez l'offre pour laquelle vous souhaitez passer l'entretien :</p>
             <ul className="space-y-3">
               {(session?.matchedOffers || []).map((o, i) => (
-                <li key={i} className="card">
+                <li 
+                  key={i} 
+                  className={`card cursor-pointer transition-all border-2 ${selectedOfferId === o.companyId ? 'border-orange-500 bg-orange-500/10' : 'border-transparent hover:border-white/20'}`}
+                  onClick={() => setSelectedOfferId(o.companyId)}
+                >
                   <p className="font-semibold text-white">{o.name}</p>
                   <p className="text-sm text-neutral-400">
                     {o.jobTitle} · {o.sector} · {o.city}
@@ -281,8 +288,15 @@ export default function StandJourney() {
                 </li>
               ))}
             </ul>
-            <button type="button" className="btn-primary" onClick={() => setStep('interview-intro')}>
-              Passer à l&apos;entretien simulé
+            <button 
+              type="button" 
+              className="btn-primary" 
+              onClick={() => {
+                if (!selectedOfferId) return alert("Veuillez sélectionner une offre avant de continuer.");
+                setStep('interview-intro');
+              }}
+            >
+              Passer à l'entretien simulé
             </button>
           </section>
         )}

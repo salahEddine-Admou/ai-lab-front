@@ -27,8 +27,8 @@ export const standApi = {
   },
   getMatches: (token) =>
     request(`/stand/session/${token}/matches`, { method: 'POST', body: '{}' }),
-  startInterview: (token) =>
-    request(`/stand/session/${token}/interview/start`, { method: 'POST', body: '{}' }),
+  startInterview: (token, companyId) =>
+    request(`/stand/session/${token}/interview/start`, { method: 'POST', body: JSON.stringify({ companyId }) }),
   submitAnswer: (token, body) =>
     request(`/stand/session/${token}/interview/answer`, {
       method: 'POST',
